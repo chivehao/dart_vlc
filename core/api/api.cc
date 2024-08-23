@@ -20,11 +20,6 @@
 
 #include "core.h"
 
-#include "vector"
-#include "string"
-#include "sstream"
-#include "iostream"
-
 namespace DartObjects {
 
 struct DeviceList {
@@ -379,17 +374,6 @@ void PlayerSetHWND(int32_t id, int64_t hwnd) {
   player->SetHWND(hwnd);
 }
 
-std::string concatenateTrackDescVector(const std::vector<VLC::TrackDescription>& vec) {
-    std::ostringstream oss;
-    for (const auto& obj : vec) {
-        std::cout << "Track id: " << obj.id() << " : " << "Track name: " << obj.name() << std::endl;
-        oss << obj.id() << ":" << obj.name() << ";";
-    }
-
-    std::cout << "Tracks: " << oss.str() << std::endl;
-    return oss.str();
-}
-
 const char* PlayerAudioTrackDescription(
     int32_t id
 ) {
@@ -399,8 +383,11 @@ const char* PlayerAudioTrackDescription(
         id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
-  std::vector<VLC::TrackDescription> vec = player->AudioTrackDescription();
-  std::string result = concatenateTrackDescVector(vec);
+  std::ostringstream oss;
+  for (const auto& obj : player->AudioTrackDescription()) {
+      oss << obj.id() << ":" << obj.name() << ";";
+  }
+  std::string result = oss.str();
   char* cStr = new char[result.length() + 1];
   std::strcpy(cStr, result.c_str());
   return cStr;
@@ -415,8 +402,11 @@ const char* PlayerSpuTrackDescription(
         id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
     player = g_players->Get(id);
   }
-  std::vector<VLC::TrackDescription> vec = player->SpuTrackDescription();
-  std::string result = concatenateTrackDescVector(vec);
+  std::ostringstream oss;
+  for (const auto& obj : player->AudioTrackDescription()) {
+      oss << obj.id() << ":" << obj.name() << ";";
+  }
+  std::string result = oss.str();
   char* cStr = new char[result.length() + 1];
   std::strcpy(cStr, result.c_str());
   return cStr;

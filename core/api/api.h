@@ -48,8 +48,8 @@ struct DartEqualizer {
 };
 
 struct VectorData {
-    int* data;     // 指向向量数据的指针
-    size_t size;   // 向量的大小
+    int* data;
+    size_t size;
 };
 
 
