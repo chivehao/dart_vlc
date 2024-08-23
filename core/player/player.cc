@@ -285,6 +285,19 @@ void Player::SetHWND(int64_t hwnd) {
   vlc_media_player_.setHwnd(reinterpret_cast<void*>(hwnd));
 }
 
+std::vector<VLC::TrackDescription> Player::AudioTrackDescription() {
+    return vlc_media_player_.audioTrackDescription();
+}
+
+std::vector<VLC::TrackDescription> Player::SpuTrackDescription() {
+    return vlc_media_player_.spuDescription();
+}
+
+int32_t Player::SetSpu(int32_t i_spu) {
+    return vlc_media_player_.setSpu(i_spu);
+}
+
+
 void Player::SetOpenCallback(std::function<void(VLC::Media)> callback) {
   open_callback_ = callback;
   vlc_media_player_.eventManager().onMediaChanged(

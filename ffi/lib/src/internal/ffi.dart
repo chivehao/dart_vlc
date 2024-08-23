@@ -14,6 +14,12 @@ import 'package:dart_vlc_ffi/src/internal/typedefs/chromecast.dart';
 import 'package:dart_vlc_ffi/src/player.dart';
 import 'package:dart_vlc_ffi/src/media_source/media.dart';
 
+abstract class CommonFFI {
+  static final CommonFreeStrDart freeStr = dynamicLibrary
+      .lookup<NativeFunction<CommonFreeStrCXX>>('CommonFreeStr')
+      .asFunction();
+}
+
 abstract class PlayerFFI {
   static final PlayerCreateDart create = dynamicLibrary
       .lookup<NativeFunction<PlayerCreateCXX>>('PlayerCreate')
@@ -120,6 +126,19 @@ abstract class PlayerFFI {
   static final PlayerSetHWNDDart setHWND = dynamicLibrary
       .lookup<NativeFunction<PlayerSetHWNDCXX>>('PlayerSetHWND')
       .asFunction();
+
+  static final PlayerAudioTrackDescriptionDart audioTrackDescription = dynamicLibrary
+      .lookup<NativeFunction<PlayerAudioTrackDescriptionCXX>>('PlayerAudioTrackDescription')
+      .asFunction();
+
+  static final PlayerSpuTrackDescriptionDart spuTrackDescription = dynamicLibrary
+      .lookup<NativeFunction<PlayerSpuTrackDescriptionCXX>>('PlayerSpuTrackDescription')
+      .asFunction();
+
+  static final PlayerSetSpuDart setSpu = dynamicLibrary
+      .lookup<NativeFunction<PlayerSetSpuCXX>>('PlayerSetSpu')
+      .asFunction();
+
 }
 
 abstract class MediaFFI {

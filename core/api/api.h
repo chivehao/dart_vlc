@@ -47,6 +47,12 @@ struct DartEqualizer {
   int32_t size;
 };
 
+struct VectorData {
+    int* data;     // 指向向量数据的指针
+    size_t size;   // 向量的大小
+};
+
+
 DLLEXPORT void PlayerCreate(int32_t id, int32_t video_width,
                             int32_t video_height,
                             int32_t command_line_argument_count,
@@ -105,6 +111,16 @@ DLLEXPORT int32_t PlayerGetAudioTrackCount(int32_t id);
 DLLEXPORT bool PlayerAddSlave(int32_t id, int32_t media_slave_type, const char* uri, bool select);
 
 DLLEXPORT void PlayerSetHWND(int32_t id, int64_t hwnd);
+
+DLLEXPORT const char* PlayerAudioTrackDescription(int32_t id);
+
+DLLEXPORT const char* PlayerSpuTrackDescription(int32_t id);
+
+DLLEXPORT void CommonFreeStr(const char* str) {
+   delete[] str;
+}
+
+DLLEXPORT int32_t PlayerSetSpu(int32_t id, int32_t i_spu);
 
 DLLEXPORT const char** MediaParse(Dart_Handle object, const char* type,
                                   const char* resource, int32_t timeout);

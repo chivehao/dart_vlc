@@ -318,6 +318,44 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                                   .toList();
                             },
                           ),
+                          PopupMenuButton(
+                            iconSize: 24,
+                            icon: Icon(Icons.audiotrack, color: Colors.white),
+                            onSelected: (String trackDesc) {
+                            },
+                            itemBuilder: (context) {
+                              return player.audioTrackDescription()
+                                  .map(
+                                    (track) => PopupMenuItem(
+                                      child: Text(track,
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                          )),
+                                      value: track,
+                                    ),
+                                  )
+                                  .toList();
+                            },
+                          ),
+                          PopupMenuButton(
+                            iconSize: 24,
+                            icon: Icon(Icons.subtitles, color: Colors.white),
+                            onSelected: (String trackDesc) {
+                            },
+                            itemBuilder: (context) {
+                              return player.spuTrackDescription()
+                                  .map(
+                                    (track) => PopupMenuItem(
+                                      child: Text(track,
+                                          style: TextStyle(
+                                            fontSize: 14.0,
+                                          )),
+                                      value: track,
+                                    ),
+                                  )
+                                  .toList();
+                            },
+                          ),
                           // full screen
                           IconButton(
                             iconSize: 30,

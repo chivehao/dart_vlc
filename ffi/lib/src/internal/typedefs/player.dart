@@ -1,5 +1,9 @@
 import 'dart:ffi';
+import 'package:dart_vlc_ffi/dart_vlc_ffi.dart';
 import 'package:ffi/ffi.dart';
+
+typedef CommonFreeStrCXX = Void Function(Pointer<Utf8> str);
+typedef CommonFreeStrDart = void Function(Pointer<Utf8> str);
 
 typedef PlayerCreateCXX = Void Function(
     Int32 id,
@@ -66,3 +70,9 @@ typedef PlayerAddSlaveCXX = Bool Function(Int32 id, Int32 mediaSlaveType, Pointe
 typedef PlayerAddSlaveDart = bool Function(int id, int mediaSlaveType, Pointer<Utf8> uri, bool select);
 typedef PlayerSetHWNDCXX = Int32 Function(Int32 id, Int64 hwnd);
 typedef PlayerSetHWNDDart = int Function(int id, int hwnd);
+typedef PlayerAudioTrackDescriptionCXX = Pointer<Utf8> Function(Int32 id);
+typedef PlayerAudioTrackDescriptionDart = Pointer<Utf8> Function(int id);
+typedef PlayerSpuTrackDescriptionCXX = Pointer<Utf8> Function(Int32 id);
+typedef PlayerSpuTrackDescriptionDart = Pointer<Utf8> Function(int id);
+typedef PlayerSetSpuCXX = Int32 Function(Int32 id, Int32 iSpu);
+typedef PlayerSetSpuDart = int Function(int id, int iSpu);

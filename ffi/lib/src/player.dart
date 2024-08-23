@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:ffi' as ffi;
 import 'dart:io';
 import 'dart:async';
 import 'package:ffi/ffi.dart';
@@ -424,6 +425,55 @@ class Player {
   void setHWND(int hwnd) {
     PlayerFFI.setHWND(id, hwnd);
   }
+
+  /// 0:Track1;1:Track2;
+  List<String> audioTrackDescription() {
+    var cString = PlayerFFI.audioTrackDescription(id);
+    String res = "";
+    try {
+      res = cString.toDartString();
+      print('Received String: $res');
+    } finally {
+      CommonFFI.freeStr(cString);
+    }
+
+    if (res == "") return List.empty();
+    if (res.endsWith(";")) {
+      res.substring(0, res.length - 1);
+    }
+    if (res.contains(";")) {
+      return res.split(";")
+          .where((str)=> str != "")
+          .toList();
+    }
+    return List.empty();
+  }
+
+  /// 0:Track1;1:Track2;
+  List<String> spuTrackDescription() {
+    var cString = PlayerFFI.spuTrackDescription(id);
+    String res = "";
+    try {
+      res = cString.toDartString();
+      print('Received String: $res');
+    } finally {
+      CommonFFI.freeStr(cString);
+    }
+    if (res.endsWith(";")) {
+      res.substring(0, res.length - 1);
+    }
+    if (res.contains(";")) {
+      return res.split(";")
+          .where((str)=> str != "")
+          .toList();
+    }
+    return List.empty();
+  }
+
+  bool setSpu(int spuId) {
+    return PlayerFFI.setSpu(id, spuId) == 0;
+  }
+
 
   /// Destroys the instance of [Player] & closes all [StreamController]s in it.
   void dispose() {

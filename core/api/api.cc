@@ -20,6 +20,11 @@
 
 #include "core.h"
 
+#include "vector"
+#include "string"
+#include "sstream"
+#include "iostream"
+
 namespace DartObjects {
 
 struct DeviceList {
@@ -373,6 +378,62 @@ void PlayerSetHWND(int32_t id, int64_t hwnd) {
   }
   player->SetHWND(hwnd);
 }
+
+std::string concatenateTrackDescVector(const std::vector<VLC::TrackDescription>& vec) {
+    std::ostringstream oss;
+    for (const auto& obj : vec) {
+        std::cout << "Track id: " << obj.id() << " : " << "Track name: " << obj.name() << std::endl;
+        oss << obj.id() << ":" << obj.name() << ";";
+    }
+
+    std::cout << "Tracks: " << oss.str() << std::endl;
+    return oss.str();
+}
+
+const char* PlayerAudioTrackDescription(
+    int32_t id
+) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  std::vector<VLC::TrackDescription> vec = player->AudioTrackDescription();
+  std::string result = concatenateTrackDescVector(vec);
+  char* cStr = new char[result.length() + 1];
+  std::strcpy(cStr, result.c_str());
+  return cStr;
+}
+
+const char* PlayerSpuTrackDescription(
+    int32_t id
+) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  std::vector<VLC::TrackDescription> vec = player->SpuTrackDescription();
+  std::string result = concatenateTrackDescVector(vec);
+  char* cStr = new char[result.length() + 1];
+  std::strcpy(cStr, result.c_str());
+  return cStr;
+}
+
+int32_t PlayerSetSpu(
+    int32_t id, int32_t i_spu
+) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  return player->SetSpu(i_spu);
+}
+
 
 void MediaClearMap(void*, void* peer) {
   delete reinterpret_cast<std::map<std::string, std::string>*>(peer);

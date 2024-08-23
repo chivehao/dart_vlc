@@ -99,6 +99,12 @@ class Player {
 
   void SetHWND(int64_t hwnd);
 
+  std::vector<VLC::TrackDescription> AudioTrackDescription();
+
+  std::vector<VLC::TrackDescription> SpuTrackDescription();
+
+  int32_t SetSpu(int32_t i_spu);
+
   // These methods register callbacks from the client code which get invoked
   // when the corresponding event occurs.
 
