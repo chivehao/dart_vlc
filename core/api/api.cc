@@ -403,7 +403,7 @@ const char* PlayerSpuTrackDescription(
     player = g_players->Get(id);
   }
   std::ostringstream oss;
-  for (const auto& obj : player->AudioTrackDescription()) {
+  for (const auto& obj : player->SpuTrackDescription()) {
       oss << obj.id() << ":" << obj.name() << ";";
   }
   std::string result = oss.str();

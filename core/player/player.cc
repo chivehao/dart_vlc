@@ -275,7 +275,6 @@ bool Player::AddSlave(int32_t media_slave_type, std::string uri, bool select) {
             type = VLC::MediaSlave::Type::Audio;
             break;
         default:
-            // 处理无效的media_slave_type，例如返回false或抛出异常
             return false;
     }
     return vlc_media_player_.addSlave(type, uri, select);
