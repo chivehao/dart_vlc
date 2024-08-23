@@ -207,7 +207,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           bottom: 10,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               if ((snapshot.data?.medias.length ?? 0) > 1)
                                 IconButton(
@@ -299,6 +299,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           PopupMenuButton(
                             iconSize: 24,
+                            tooltip: "Audio Devices",
                             icon: Icon(Icons.speaker, color: Colors.white),
                             onSelected: (Device device) {
                               player.setDevice(device);
@@ -320,6 +321,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           PopupMenuButton(
                             iconSize: 24,
+                            tooltip: "Audio Tracks",
                             icon: Icon(Icons.audiotrack, color: Colors.white),
                             onSelected: (String trackDesc) {
                               if (trackDesc == "" || !trackDesc.contains(":")) return;
@@ -343,6 +345,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           PopupMenuButton(
                             iconSize: 24,
+                            tooltip: "Subtitle Tracks",
                             icon: Icon(Icons.subtitles, color: Colors.white),
                             onSelected: (String trackDesc) {
                               if (trackDesc == "" || !trackDesc.contains(":")) return;
@@ -366,7 +369,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           // full screen
                           IconButton(
-                            iconSize: 30,
+                            iconSize: 24,
                             icon: const Icon(Icons.fullscreen, color: Colors.white),
                             onPressed: () {
                               // 全屏按钮的逻辑
