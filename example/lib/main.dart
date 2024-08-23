@@ -287,10 +287,10 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                             // player.open(
                                             //   Playlist(medias: medias),
                                             // );
-                                            const videoUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B01%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.mkv?sign=GMkkPyrN_EWWJ4mLfsCgVxdGq1dzIeJAFS_g7khlJvQ=:0";
-                                            const subtitleUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B01%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.SumiSora-SC.ass?sign=qOukOFoHsxKS3KBHvm2o_thmrhwCCSbnvUr8Ol_jjXk=:0";
+                                            const videoUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20K-ON%21/%5BVCB-Studio%5D%20K-ON%21%20%5BMa10p_1080p%5D/%5BVCB-Studio%5D%20K-ON%21%20%5B01%5D%5BMa10p_1080p%5D%5Bx265_flac_2aac%5D.mkv?sign=40V8YoxwWQArNe82D1pBBFuIVjLuPdhdNtIZUxdbD7c=:0";
+                                            const subtitleScUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20K-ON%21/%5BVCB-Studio%5D%20K-ON%21%20%5BMa10p_1080p%5D/%5BVCB-Studio%5D%20K-ON%21%20%5B01%5D%5BMa10p_1080p%5D%5Bx265_flac_2aac%5D.sc.ass?sign=gXFJBbYQCuAfU2AVS4n14HDGAsNkTtgHZ0robANUyV0=:0";
                                             player.open(Media.network(videoUrl));
-                                            player.addSlave(MediaSlaveType.subtitle, subtitleUrl, true);
+                                            player.addSlave(MediaSlaveType.subtitle, subtitleScUrl, true);
                                           },
                                         ),
                                         child: Text(

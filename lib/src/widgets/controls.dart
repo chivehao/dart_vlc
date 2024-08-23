@@ -322,6 +322,10 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                             iconSize: 24,
                             icon: Icon(Icons.audiotrack, color: Colors.white),
                             onSelected: (String trackDesc) {
+                              if (trackDesc == "" || !trackDesc.contains(":")) return;
+                              var trackProps = trackDesc.split(":");
+                              var trackId = int.parse(trackProps[0]);
+                              player.setAudioTrack(trackId);
                             },
                             itemBuilder: (context) {
                               return player.audioTrackDescription()
@@ -341,6 +345,10 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                             iconSize: 24,
                             icon: Icon(Icons.subtitles, color: Colors.white),
                             onSelected: (String trackDesc) {
+                              if (trackDesc == "" || !trackDesc.contains(":")) return;
+                              var trackProps = trackDesc.split(":");
+                              var trackId = int.parse(trackProps[0]);
+                              player.setSpu(trackId);
                             },
                             itemBuilder: (context) {
                               return player.spuTrackDescription()
