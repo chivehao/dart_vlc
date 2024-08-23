@@ -1,3 +1,10 @@
+# 0.3.0
+
+- add player.addSlave for subtitles support
+- add player.audioTrackDescription to get audio track desc list
+- add player.spuTrackDescription to get spu subtitle track desc list
+- add player.setSpu to switch subtitle select
+
 ## 0.2.0
 
 - Updated FFI bindings.

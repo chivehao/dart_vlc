@@ -1,6 +1,6 @@
 name: dart_vlc_ffi
 description: package:dart_vlc internal dependency package.
-version: 0.2.0
+version: 0.3.0
 homepage: https://github.com/alexmercerind/dart_vlc
 repository: https://github.com/alexmercerind/dart_vlc
 documentation: https://github.com/alexmercerind/dart_vlc/blob/master/README.md
