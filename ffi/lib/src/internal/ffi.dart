@@ -112,6 +112,11 @@ abstract class PlayerFFI {
           'PlayerGetAudioTrackCount')
       .asFunction();
 
+  static final PlayerAddSlaveDart addSlave = dynamicLibrary
+  .lookup<NativeFunction<PlayerAddSlaveCXX>>(
+    'PlayerAddSlave')
+      .asFunction();
+
   static final PlayerSetHWNDDart setHWND = dynamicLibrary
       .lookup<NativeFunction<PlayerSetHWNDCXX>>('PlayerSetHWND')
       .asFunction();

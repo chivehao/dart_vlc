@@ -265,6 +265,22 @@ int32_t Player::GetAudioTrackCount() {
   return vlc_media_player_.audioTrackCount();
 }
 
+bool Player::AddSlave(int32_t media_slave_type, std::string uri, bool select) {
+    VLC::MediaSlave::Type type;
+    switch (media_slave_type) {
+        case 0:
+            type = VLC::MediaSlave::Type::Subtitle;
+            break;
+        case 1:
+            type = VLC::MediaSlave::Type::Audio;
+            break;
+        default:
+            // 处理无效的media_slave_type，例如返回false或抛出异常
+            return false;
+    }
+    return vlc_media_player_.addSlave(type, uri, select);
+}
+
 void Player::SetHWND(int64_t hwnd) {
   vlc_media_player_.setHwnd(reinterpret_cast<void*>(hwnd));
 }

@@ -101,6 +101,7 @@ class Video extends StatefulWidget {
     this.progressBarTextStyle = const TextStyle(),
     this.filterQuality = FilterQuality.low,
     this.fillColor = Colors.black,
+    this.onFullScreenChange,
   })  : player = player ?? players[playerId]! as Player,
         super(key: key);
 
@@ -172,6 +173,8 @@ class Video extends StatefulWidget {
   /// Fill color.
   final Color fillColor;
 
+  final Function? onFullScreenChange;
+
   @override
   VideoStateBase createState() => VideoStateTexture();
 }
@@ -212,6 +215,7 @@ abstract class VideoStateBase extends State<Video>
               showTimeLeft: widget.showTimeLeft,
               progressBarTextStyle: widget.progressBarTextStyle,
               child: present(),
+              onFullScreenChange: widget.onFullScreenChange,
             )
           : present(),
     );

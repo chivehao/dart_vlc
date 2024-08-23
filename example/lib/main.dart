@@ -44,6 +44,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
   TextEditingController metasController = TextEditingController();
   double bufferingProgress = 0.0;
   Media? metadataCurrentMedia;
+  bool _isFullScreen = false;
 
   @override
   void initState() {
@@ -80,6 +81,12 @@ class PrimaryScreenState extends State<PrimaryScreen> {
     }
   }
 
+  void _updateFullScreen() {
+    setState(() {
+      _isFullScreen = !_isFullScreen;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isTablet;
@@ -97,9 +104,13 @@ class PrimaryScreenState extends State<PrimaryScreen> {
       isTablet = false;
       isPhone = true;
     }
+    double videoWidth = isPhone ? 320 : 640;
+    double videoHeight = isPhone ? 180 : 360;
+    if (_isFullScreen) videoWidth = MediaQuery.of(context).size.width - 8;
+    if (_isFullScreen) videoHeight = MediaQuery.of(context).size.height;
     return ListView(
       shrinkWrap: true,
-      padding: const EdgeInsets.all(4.0),
+      padding: _isFullScreen ? EdgeInsets.all(0) : EdgeInsets.all(4.0),
       children: [
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -107,49 +118,435 @@ class PrimaryScreenState extends State<PrimaryScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Card(
-              elevation: 4.0,
+              elevation: _isFullScreen ? 0 : 4.0,
               clipBehavior: Clip.antiAlias,
               child: Video(
                 player: player,
-                width: isPhone ? 320 : 640,
-                height: isPhone ? 180 : 360,
+                width: videoWidth,
+                height: videoHeight,
                 volumeThumbColor: Colors.blue,
                 volumeActiveColor: Colors.blue,
                 showControls: !isPhone,
+                onFullScreenChange: _updateFullScreen,
               ),
             )
           ],
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (isPhone) _controls(context, isPhone),
-                  Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.all(4.0),
-                    child: Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                              const Text('Playlist creation.'),
-                              Divider(
+        Visibility(
+            visible: !_isFullScreen,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (isPhone) _controls(context, isPhone),
+                      Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(4.0),
+                        child: Container(
+                          margin: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                                  const Text('Playlist creation.'),
+                                  Divider(
+                                    height: 8.0,
+                                    color: Colors.transparent,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: TextField(
+                                          controller: controller,
+                                          autofocus: true,
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                          decoration: InputDecoration.collapsed(
+                                            hintStyle: const TextStyle(
+                                              fontSize: 14.0,
+                                            ),
+                                            hintText: 'Enter Media path.',
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        width: 152.0,
+                                        child: DropdownButton<MediaType>(
+                                          value: mediaType,
+                                          onChanged: (value) => this.setState(
+                                              () => mediaType = value!),
+                                          items: [
+                                            DropdownMenuItem<MediaType>(
+                                              value: MediaType.file,
+                                              child: Text(
+                                                MediaType.file.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                            DropdownMenuItem<MediaType>(
+                                              value: MediaType.network,
+                                              child: Text(
+                                                MediaType.network.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                            DropdownMenuItem<MediaType>(
+                                              value: MediaType.asset,
+                                              child: Text(
+                                                MediaType.asset.toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 14.0,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 10.0),
+                                        child: ElevatedButton(
+                                          onPressed: () {
+                                            if (mediaType == MediaType.file) {
+                                              medias.add(
+                                                Media.file(
+                                                  File(
+                                                    controller.text
+                                                        .replaceAll('"', ''),
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (mediaType ==
+                                                MediaType.network) {
+                                              medias.add(
+                                                Media.network(
+                                                  controller.text,
+                                                ),
+                                              );
+                                            }
+                                            setState(() {});
+                                          },
+                                          child: Text(
+                                            'Add to Playlist',
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const Divider(
+                                    height: 12.0,
+                                  ),
+                                  const Divider(
+                                    height: 8.0,
+                                    color: Colors.transparent,
+                                  ),
+                                  const Text('Playlist'),
+                                ] +
+                                this
+                                    .medias
+                                    .map(
+                                      (media) => ListTile(
+                                        title: Text(
+                                          media.resource,
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          media.mediaType.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                    .toList() +
+                                <Widget>[
+                                  const Divider(
+                                    height: 8.0,
+                                    color: Colors.transparent,
+                                  ),
+                                  Row(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () => setState(
+                                          () {
+                                            // player.open(
+                                            //   Playlist(medias: medias),
+                                            // );
+                                            const videoUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B01%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.mkv?sign=GMkkPyrN_EWWJ4mLfsCgVxdGq1dzIeJAFS_g7khlJvQ=:0";
+                                            const subtitleUrl = "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B01%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.SumiSora-SC.ass?sign=qOukOFoHsxKS3KBHvm2o_thmrhwCCSbnvUr8Ol_jjXk=:0";
+                                            player.open(Media.network(videoUrl));
+                                            player.addSlave(MediaSlaveType.subtitle, subtitleUrl, true);
+                                          },
+                                        ),
+                                        child: Text(
+                                          'Open into Player',
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 12.0),
+                                      ElevatedButton(
+                                        onPressed: () {
+                                          setState(() => medias.clear());
+                                        },
+                                        child: Text(
+                                          'Clear the list',
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(4.0),
+                        child: Container(
+                          margin: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Playback event listeners.'),
+                              const Divider(
+                                height: 12.0,
+                                color: Colors.transparent,
+                              ),
+                              const Divider(
+                                height: 12.0,
+                              ),
+                              const Text('Playback position.'),
+                              const Divider(
                                 height: 8.0,
                                 color: Colors.transparent,
                               ),
+                              Slider(
+                                min: 0,
+                                max: this
+                                        .position
+                                        .duration
+                                        ?.inMilliseconds
+                                        .toDouble() ??
+                                    1.0,
+                                value: this
+                                        .position
+                                        .position
+                                        ?.inMilliseconds
+                                        .toDouble() ??
+                                    0.0,
+                                onChanged: (double position) => player.seek(
+                                  Duration(
+                                    milliseconds: position.toInt(),
+                                  ),
+                                ),
+                              ),
+                              const Text('Event streams.'),
+                              const Divider(
+                                height: 8.0,
+                                color: Colors.transparent,
+                              ),
+                              Table(
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      const Text('player.general.volume'),
+                                      Text(
+                                        '${general.volume}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.general.rate'),
+                                      Text(
+                                        '${general.rate}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.position.position'),
+                                      Text(
+                                        '${position.position}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.position.duration'),
+                                      Text(
+                                        '${position.duration}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.playback.isCompleted'),
+                                      Text(
+                                        '${playback.isCompleted}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.playback.isPlaying'),
+                                      Text(
+                                        '${playback.isPlaying}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.playback.isSeekable'),
+                                      Text(
+                                        '${playback.isSeekable}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.current.index'),
+                                      Text(
+                                        '${current.index}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.current.media'),
+                                      Text(
+                                        '${current.media}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.current.medias'),
+                                      Text(
+                                        '${current.medias}',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.videoDimensions'),
+                                      Text(
+                                        '$videoDimensions',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                  TableRow(
+                                    children: [
+                                      const Text('player.bufferingProgress'),
+                                      Text(
+                                        '$bufferingProgress',
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(4.0),
+                        child: Container(
+                          margin: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                                  Text('Playback devices.'),
+                                  Divider(
+                                    height: 12.0,
+                                    color: Colors.transparent,
+                                  ),
+                                  Divider(
+                                    height: 12.0,
+                                  ),
+                                ] +
+                                this
+                                    .devices
+                                    .map(
+                                      (device) => ListTile(
+                                        title: Text(
+                                          device.name,
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        subtitle: Text(
+                                          device.id,
+                                          style: const TextStyle(
+                                            fontSize: 14.0,
+                                          ),
+                                        ),
+                                        onTap: () => player.setDevice(device),
+                                      ),
+                                    )
+                                    .toList(),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        elevation: 2.0,
+                        margin: const EdgeInsets.all(4.0),
+                        child: Container(
+                          margin: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Metas parsing.'),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     child: TextField(
-                                      controller: controller,
+                                      controller: metasController,
                                       autofocus: true,
                                       style: const TextStyle(
                                         fontSize: 14.0,
@@ -166,8 +563,8 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                     width: 152.0,
                                     child: DropdownButton<MediaType>(
                                       value: mediaType,
-                                      onChanged: (value) => this
-                                          .setState(() => mediaType = value!),
+                                      onChanged: (value) =>
+                                          setState(() => mediaType = value!),
                                       items: [
                                         DropdownMenuItem<MediaType>(
                                           value: MediaType.file,
@@ -200,30 +597,25 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(left: 10.0),
+                                    padding: EdgeInsets.only(left: 16.0),
                                     child: ElevatedButton(
                                       onPressed: () {
                                         if (mediaType == MediaType.file) {
-                                          medias.add(
-                                            Media.file(
-                                              File(
-                                                controller.text
-                                                    .replaceAll('"', ''),
-                                              ),
-                                            ),
+                                          metadataCurrentMedia = Media.file(
+                                            File(metasController.text),
+                                            parse: true,
                                           );
                                         } else if (mediaType ==
                                             MediaType.network) {
-                                          medias.add(
-                                            Media.network(
-                                              controller.text,
-                                            ),
+                                          metadataCurrentMedia = Media.network(
+                                            metasController.text,
+                                            parse: true,
                                           );
                                         }
                                         setState(() {});
                                       },
-                                      child: Text(
-                                        'Add to Playlist',
+                                      child: const Text(
+                                        'Parse',
                                         style: TextStyle(
                                           fontSize: 14.0,
                                         ),
@@ -239,404 +631,31 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                 height: 8.0,
                                 color: Colors.transparent,
                               ),
-                              const Text('Playlist'),
-                            ] +
-                            this
-                                .medias
-                                .map(
-                                  (media) => ListTile(
-                                    title: Text(
-                                      media.resource,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      media.mediaType.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList() +
-                            <Widget>[
-                              const Divider(
-                                height: 8.0,
-                                color: Colors.transparent,
-                              ),
-                              Row(
-                                children: [
-                                  ElevatedButton(
-                                    onPressed: () => setState(
-                                      () {
-                                        player.open(
-                                          Playlist(medias: medias),
-                                        );
-                                      },
-                                    ),
-                                    child: Text(
-                                      'Open into Player',
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12.0),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      setState(() => medias.clear());
-                                    },
-                                    child: Text(
-                                      'Clear the list',
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                      ),
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.all(4.0),
-                    child: Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Playback event listeners.'),
-                          const Divider(
-                            height: 12.0,
-                            color: Colors.transparent,
-                          ),
-                          const Divider(
-                            height: 12.0,
-                          ),
-                          const Text('Playback position.'),
-                          const Divider(
-                            height: 8.0,
-                            color: Colors.transparent,
-                          ),
-                          Slider(
-                            min: 0,
-                            max: this
-                                    .position
-                                    .duration
-                                    ?.inMilliseconds
-                                    .toDouble() ??
-                                1.0,
-                            value: this
-                                    .position
-                                    .position
-                                    ?.inMilliseconds
-                                    .toDouble() ??
-                                0.0,
-                            onChanged: (double position) => player.seek(
-                              Duration(
-                                milliseconds: position.toInt(),
-                              ),
-                            ),
-                          ),
-                          const Text('Event streams.'),
-                          const Divider(
-                            height: 8.0,
-                            color: Colors.transparent,
-                          ),
-                          Table(
-                            children: [
-                              TableRow(
-                                children: [
-                                  const Text('player.general.volume'),
-                                  Text(
-                                    '${general.volume}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.general.rate'),
-                                  Text(
-                                    '${general.rate}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.position.position'),
-                                  Text(
-                                    '${position.position}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.position.duration'),
-                                  Text(
-                                    '${position.duration}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.playback.isCompleted'),
-                                  Text(
-                                    '${playback.isCompleted}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.playback.isPlaying'),
-                                  Text(
-                                    '${playback.isPlaying}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.playback.isSeekable'),
-                                  Text(
-                                    '${playback.isSeekable}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.current.index'),
-                                  Text(
-                                    '${current.index}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.current.media'),
-                                  Text(
-                                    '${current.media}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.current.medias'),
-                                  Text(
-                                    '${current.medias}',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.videoDimensions'),
-                                  Text(
-                                    '$videoDimensions',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
-                              ),
-                              TableRow(
-                                children: [
-                                  const Text('player.bufferingProgress'),
-                                  Text(
-                                    '$bufferingProgress',
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                ],
+                              Text(
+                                JsonEncoder.withIndent('    ')
+                                    .convert(metadataCurrentMedia?.metas),
                               ),
                             ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      if (isPhone) _playlist(context),
+                    ],
                   ),
-                  Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.all(4.0),
-                    child: Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                              Text('Playback devices.'),
-                              Divider(
-                                height: 12.0,
-                                color: Colors.transparent,
-                              ),
-                              Divider(
-                                height: 12.0,
-                              ),
-                            ] +
-                            this
-                                .devices
-                                .map(
-                                  (device) => ListTile(
-                                    title: Text(
-                                      device.name,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                    subtitle: Text(
-                                      device.id,
-                                      style: const TextStyle(
-                                        fontSize: 14.0,
-                                      ),
-                                    ),
-                                    onTap: () => player.setDevice(device),
-                                  ),
-                                )
-                                .toList(),
-                      ),
-                    ),
-                  ),
-                  Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.all(4.0),
-                    child: Container(
-                      margin: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Metas parsing.'),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: metasController,
-                                  autofocus: true,
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                  ),
-                                  decoration: InputDecoration.collapsed(
-                                    hintStyle: const TextStyle(
-                                      fontSize: 14.0,
-                                    ),
-                                    hintText: 'Enter Media path.',
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: 152.0,
-                                child: DropdownButton<MediaType>(
-                                  value: mediaType,
-                                  onChanged: (value) =>
-                                      setState(() => mediaType = value!),
-                                  items: [
-                                    DropdownMenuItem<MediaType>(
-                                      value: MediaType.file,
-                                      child: Text(
-                                        MediaType.file.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ),
-                                    DropdownMenuItem<MediaType>(
-                                      value: MediaType.network,
-                                      child: Text(
-                                        MediaType.network.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ),
-                                    DropdownMenuItem<MediaType>(
-                                      value: MediaType.asset,
-                                      child: Text(
-                                        MediaType.asset.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14.0,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: EdgeInsets.only(left: 16.0),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    if (mediaType == MediaType.file) {
-                                      metadataCurrentMedia = Media.file(
-                                        File(metasController.text),
-                                        parse: true,
-                                      );
-                                    } else if (mediaType == MediaType.network) {
-                                      metadataCurrentMedia = Media.network(
-                                        metasController.text,
-                                        parse: true,
-                                      );
-                                    }
-                                    setState(() {});
-                                  },
-                                  child: const Text(
-                                    'Parse',
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(
-                            height: 12.0,
-                          ),
-                          const Divider(
-                            height: 8.0,
-                            color: Colors.transparent,
-                          ),
-                          Text(
-                            JsonEncoder.withIndent('    ')
-                                .convert(metadataCurrentMedia?.metas),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  if (isPhone) _playlist(context),
-                ],
-              ),
-            ),
-            if (isTablet)
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    _controls(context, isPhone),
-                    _playlist(context),
-                  ],
                 ),
-              ),
-          ],
-        )
+                if (isTablet)
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _controls(context, isPhone),
+                        _playlist(context),
+                      ],
+                    ),
+                  ),
+              ],
+            ))
       ],
     );
   }

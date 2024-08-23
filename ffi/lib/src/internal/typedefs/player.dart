@@ -62,5 +62,7 @@ typedef PlayerSetAudioTrackCXX = Void Function(Int32 id, Int32 index);
 typedef PlayerSetAudioTrackDart = void Function(int id, int index);
 typedef PlayerGetAudioTrackCountCXX = Int32 Function(Int32 id);
 typedef PlayerGetAudioTrackCountDart = int Function(int id);
+typedef PlayerAddSlaveCXX = Bool Function(Int32 id, Int32 mediaSlaveType, Pointer<Utf8> uri, Bool select);
+typedef PlayerAddSlaveDart = bool Function(int id, int mediaSlaveType, Pointer<Utf8> uri, bool select);
 typedef PlayerSetHWNDCXX = Int32 Function(Int32 id, Int64 hwnd);
 typedef PlayerSetHWNDDart = int Function(int id, int hwnd);

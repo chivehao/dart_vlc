@@ -5,6 +5,8 @@ import 'package:ffi/ffi.dart';
 import 'package:dart_vlc_ffi/dart_vlc_ffi.dart';
 import 'package:dart_vlc_ffi/src/internal/ffi.dart';
 
+import 'enums/media_slave_type.dart';
+
 /// Represents dimensions of a video.
 class VideoDimensions {
   /// Width of the video.
@@ -409,6 +411,14 @@ class Player {
     // for some reason this value returns 0 when no tracks exists
     // and 2 or more if there's 1 or more audio tracks for this [MediaSource].
     return count > 1 ? count - 1 : count;
+  }
+
+  void addSlave(MediaSlaveType type, String uri, bool select) {
+    print("slave type: $type");
+    print("slave type index: ${type.index}");
+    print("uri: $uri");
+    print("select: $select");
+    PlayerFFI.addSlave(id, type.index, uri.toNativeUtf8(), select);
   }
 
   void setHWND(int hwnd) {

@@ -1,0 +1,4 @@
+enum MediaSlaveType {
+  subtitle,
+  audio
+}

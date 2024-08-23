@@ -41,6 +41,7 @@ class Control extends StatefulWidget {
     required this.volumeInactiveColor,
     required this.volumeBackgroundColor,
     required this.volumeThumbColor,
+    this.onFullScreenChange,
   }) : super(key: key);
 
   final Widget child;
@@ -57,6 +58,7 @@ class Control extends StatefulWidget {
   final Color? volumeInactiveColor;
   final Color? volumeBackgroundColor;
   final Color? volumeThumbColor;
+  final Function? onFullScreenChange;
 
   @override
   ControlState createState() => ControlState();
@@ -68,6 +70,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
   Timer? _hideTimer;
   late StreamSubscription<PlaybackState> playPauseStream;
   late AnimationController playPauseController;
+  bool _isFullScreen = false;
 
   Player get player => widget.player;
 
@@ -95,6 +98,13 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
       playPauseController.reverse();
     }
     setState(() {});
+  }
+
+  void _updateFullScreen() {
+    setState(() {
+      _isFullScreen = !_isFullScreen;
+      widget.onFullScreenChange?.call();
+    });
   }
 
   @override
@@ -308,6 +318,15 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                                   .toList();
                             },
                           ),
+                          // full screen
+                          IconButton(
+                            iconSize: 30,
+                            icon: const Icon(Icons.fullscreen, color: Colors.white),
+                            onPressed: () {
+                              // 全屏按钮的逻辑
+                              _updateFullScreen();
+                            },
+                          )
                         ],
                       ),
                     ),

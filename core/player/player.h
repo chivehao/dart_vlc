@@ -95,6 +95,8 @@ class Player {
 
   int32_t GetAudioTrackCount();
 
+  bool AddSlave(int32_t media_slave_type, std::string uri, bool select);
+
   void SetHWND(int64_t hwnd);
 
   // These methods register callbacks from the client code which get invoked
