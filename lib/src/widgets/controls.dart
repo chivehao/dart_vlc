@@ -107,6 +107,17 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
     });
   }
 
+  List<String> _getTrackDesc(String trackDesc) {
+    if (trackDesc == "" || !trackDesc.contains(":")) List.empty();
+    return trackDesc.split(":");
+  }
+
+  int? _getTrackDescId(String trackDesc) {
+    List<String> trackProps = _getTrackDesc(trackDesc);
+    if (trackProps.isEmpty) return null;
+    return int.parse(trackProps[0]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -324,13 +335,12 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                             tooltip: "音频轨道",
                             icon: Icon(Icons.audiotrack, color: Colors.white),
                             onSelected: (String trackDesc) {
-                              if (trackDesc == "" || !trackDesc.contains(":")) return;
-                              var trackProps = trackDesc.split(":");
-                              var trackId = int.parse(trackProps[0]);
-                              player.setAudioTrack(trackId);
+                              int? id = _getTrackDescId(trackDesc);
+                              if (id == null) return;
+                              player.setAudioTrack(id);
                             },
                             itemBuilder: (context) {
-                              final audioTrackCount = player.audioTrackCount;
+                              final audioTrack = player.audioTrack();
                               return player.audioTrackDescription()
                                   .where((track)=>!track.startsWith("-1"))
                                   .map(
@@ -338,7 +348,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                                       child: Text(track,
                                           style: TextStyle(
                                             fontSize: 14.0,
-                                            color: track.startsWith(audioTrackCount.toString()) ? Colors.lightBlueAccent : Colors.black
+                                            color: audioTrack == _getTrackDescId(track) ? Colors.lightBlueAccent : Colors.black
                                           )),
                                       value: track,
                                     ),

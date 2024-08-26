@@ -143,6 +143,10 @@ abstract class PlayerFFI {
       .lookup<NativeFunction<PlayerSpuCXX>>('PlayerSpu')
       .asFunction();
 
+  static final PlayerAudioTrackDart audioTrack = dynamicLibrary
+      .lookup<NativeFunction<PlayerAudioTrackCXX>>('PlayerAudioTrack')
+      .asFunction();
+
 }
 
 abstract class MediaFFI {

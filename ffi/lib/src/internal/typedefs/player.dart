@@ -78,3 +78,5 @@ typedef PlayerSetSpuCXX = Int32 Function(Int32 id, Int32 iSpu);
 typedef PlayerSetSpuDart = int Function(int id, int iSpu);
 typedef PlayerSpuCXX = Int32 Function(Int32 id);
 typedef PlayerSpuDart = int Function(int id);
+typedef PlayerAudioTrackCXX = Int32 Function(Int32 id);
+typedef PlayerAudioTrackDart = int Function(int id);

@@ -478,6 +478,10 @@ class Player {
     return PlayerFFI.spu(id);
   }
 
+  int audioTrack() {
+    return PlayerFFI.audioTrack(id);
+  }
+
 
   /// Destroys the instance of [Player] & closes all [StreamController]s in it.
   void dispose() {
