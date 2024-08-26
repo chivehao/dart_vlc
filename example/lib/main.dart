@@ -287,9 +287,9 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                             // player.open(
                                             //   Playlist(medias: medias),
                                             // );
-                                            player.open(Media.network("https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B06%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.mkv?sign=pQj7gQc3lPMZVfJsmI_bJmIXSBhECCJKx19QFr6SASk=:0"), autoStart: true);
-                                            player.addSlave(MediaSlaveType.subtitle, "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B06%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.SumiSora-SC.ass?sign=yGRrvChDPGAeRr5tiwMbY5ae8l00HOl9dGoF-TkP-lQ=:0", true);
-                                            player.addSlave(MediaSlaveType.subtitle, "https://alist.chivehao.ikaros.run/p/PKPK/Apps/Ikaros/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%5B1080p%5D/%5BVCB-Studio%5D%20Sora%20no%20Otoshimono%20%5B06%5D%5BHi10p_1080p%5D%5Bx264_flac%5D.SumiSora-TC.ass?sign=9VyOpnxHqAfCyalZQUsGhPiVTETi7vKCxVn3JuwnIlo=:0", true);
+                                            player.open(Media.network("https://ikaros.chivehao.ikaros.run/files/2024/8/26/87b163ca3842493bbded21389ef4c965.mkv"), autoStart: true);
+                                            player.addSlave(MediaSlaveType.subtitle, "https://ikaros.chivehao.ikaros.run/files/2024/8/26/3586ba8301d24fd78b516009318b5bb3.ass", true);
+                                            player.addSlave(MediaSlaveType.subtitle, "https://ikaros.chivehao.ikaros.run/files/2024/8/26/67d0cd13f1bb43fcbdefb2c38f7b9a6b.ass", true);
 
                                           },
                                         ),

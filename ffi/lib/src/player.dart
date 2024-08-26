@@ -474,6 +474,10 @@ class Player {
     return PlayerFFI.setSpu(id, spuId) == 0;
   }
 
+  int spu() {
+    return PlayerFFI.spu(id);
+  }
+
 
   /// Destroys the instance of [Player] & closes all [StreamController]s in it.
   void dispose() {

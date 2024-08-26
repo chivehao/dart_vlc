@@ -76,3 +76,5 @@ typedef PlayerSpuTrackDescriptionCXX = Pointer<Utf8> Function(Int32 id);
 typedef PlayerSpuTrackDescriptionDart = Pointer<Utf8> Function(int id);
 typedef PlayerSetSpuCXX = Int32 Function(Int32 id, Int32 iSpu);
 typedef PlayerSetSpuDart = int Function(int id, int iSpu);
+typedef PlayerSpuCXX = Int32 Function(Int32 id);
+typedef PlayerSpuDart = int Function(int id);

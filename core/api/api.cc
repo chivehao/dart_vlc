@@ -424,6 +424,18 @@ int32_t PlayerSetSpu(
   return player->SetSpu(i_spu);
 }
 
+int32_t PlayerSpu(
+    int32_t id
+) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  return player->Spu();
+}
+
 
 void MediaClearMap(void*, void* peer) {
   delete reinterpret_cast<std::map<std::string, std::string>*>(peer);

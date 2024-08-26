@@ -105,6 +105,8 @@ class Player {
 
   int32_t SetSpu(int32_t i_spu);
 
+  int32_t Spu();
+
   // These methods register callbacks from the client code which get invoked
   // when the corresponding event occurs.
 

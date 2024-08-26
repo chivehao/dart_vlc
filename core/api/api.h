@@ -122,6 +122,8 @@ DLLEXPORT void CommonFreeStr(const char* str) {
 
 DLLEXPORT int32_t PlayerSetSpu(int32_t id, int32_t i_spu);
 
+DLLEXPORT int32_t PlayerSpu(int32_t id);
+
 DLLEXPORT const char** MediaParse(Dart_Handle object, const char* type,
                                   const char* resource, int32_t timeout);
 

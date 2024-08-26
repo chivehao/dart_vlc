@@ -139,6 +139,10 @@ abstract class PlayerFFI {
       .lookup<NativeFunction<PlayerSetSpuCXX>>('PlayerSetSpu')
       .asFunction();
 
+  static final PlayerSpuDart spu = dynamicLibrary
+      .lookup<NativeFunction<PlayerSpuCXX>>('PlayerSpu')
+      .asFunction();
+
 }
 
 abstract class MediaFFI {

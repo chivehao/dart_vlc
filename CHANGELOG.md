@@ -1,9 +1,7 @@
 ## 0.5.0
 
-- add player.addSlave for subtitles support
-- add player.audioTrackDescription to get audio track desc list
-- add player.spuTrackDescription to get spu subtitle track desc list
-- add player.setSpu to switch subtitle select
+- add audio select in controls
+- add subtitle select in controls
 
 ## 0.4.0
 

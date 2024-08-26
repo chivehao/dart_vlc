@@ -293,7 +293,12 @@ std::vector<VLC::TrackDescription> Player::SpuTrackDescription() {
 }
 
 int32_t Player::SetSpu(int32_t i_spu) {
+
     return vlc_media_player_.setSpu(i_spu);
+}
+
+int32_t Player::Spu() {
+    return vlc_media_player_.spu();
 }
 
 

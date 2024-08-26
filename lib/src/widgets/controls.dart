@@ -321,7 +321,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           PopupMenuButton(
                             iconSize: 24,
-                            tooltip: "Audio Tracks",
+                            tooltip: "音频轨道",
                             icon: Icon(Icons.audiotrack, color: Colors.white),
                             onSelected: (String trackDesc) {
                               if (trackDesc == "" || !trackDesc.contains(":")) return;
@@ -330,12 +330,15 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                               player.setAudioTrack(trackId);
                             },
                             itemBuilder: (context) {
+                              final audioTrackCount = player.audioTrackCount;
                               return player.audioTrackDescription()
+                                  .where((track)=>!track.startsWith("-1"))
                                   .map(
                                     (track) => PopupMenuItem(
                                       child: Text(track,
                                           style: TextStyle(
                                             fontSize: 14.0,
+                                            color: track.startsWith(audioTrackCount.toString()) ? Colors.lightBlueAccent : Colors.black
                                           )),
                                       value: track,
                                     ),
@@ -345,7 +348,7 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                           ),
                           PopupMenuButton(
                             iconSize: 24,
-                            tooltip: "Subtitle Tracks",
+                            tooltip: "字幕轨道",
                             icon: Icon(Icons.subtitles, color: Colors.white),
                             onSelected: (String trackDesc) {
                               if (trackDesc == "" || !trackDesc.contains(":")) return;
@@ -354,12 +357,14 @@ class ControlState extends State<Control> with SingleTickerProviderStateMixin {
                               player.setSpu(trackId);
                             },
                             itemBuilder: (context) {
+                              final spu = player.spu();
                               return player.spuTrackDescription()
                                   .map(
                                     (track) => PopupMenuItem(
                                       child: Text(track,
                                           style: TextStyle(
                                             fontSize: 14.0,
+                                              color: track.startsWith(spu.toString()) ? Colors.lightBlueAccent : Colors.black
                                           )),
                                       value: track,
                                     ),

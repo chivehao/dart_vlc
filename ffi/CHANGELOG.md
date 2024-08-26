@@ -4,6 +4,7 @@
 - add player.audioTrackDescription to get audio track desc list
 - add player.spuTrackDescription to get spu subtitle track desc list
 - add player.setSpu to switch subtitle select
+- add player.spu to get current select spu track id
 
 ## 0.2.0
 
