@@ -301,6 +301,10 @@ int32_t Player::Spu() {
     return vlc_media_player_.spu();
 }
 
+int32_t Player::SpuCount() {
+    return vlc_media_player_.spuCount();
+}
+
 int32_t Player::AudioTrack() {
     return vlc_media_player_.audioTrack();
 }

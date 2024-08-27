@@ -436,6 +436,18 @@ int32_t PlayerSpu(
   return player->Spu();
 }
 
+int32_t PlayerSpuCount(
+    int32_t id
+) {
+  auto player = g_players->Get(id);
+  if (!player) {
+    g_players->Create(
+        id, std::move(std::make_unique<Player>(std::vector<std::string>{})));
+    player = g_players->Get(id);
+  }
+  return player->SpuCount();
+}
+
 int32_t PlayerAudioTrack(
     int32_t id
 ) {

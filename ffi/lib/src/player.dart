@@ -478,6 +478,10 @@ class Player {
     return PlayerFFI.spu(id);
   }
 
+  int spuCount() {
+    return PlayerFFI.spuCount(id);
+  }
+
   int audioTrack() {
     return PlayerFFI.audioTrack(id);
   }

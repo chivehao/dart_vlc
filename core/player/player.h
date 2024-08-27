@@ -107,6 +107,8 @@ class Player {
 
   int32_t Spu();
 
+  int32_t SpuCount();
+
   int32_t AudioTrack();
 
   // These methods register callbacks from the client code which get invoked
