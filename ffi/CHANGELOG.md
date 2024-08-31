@@ -7,6 +7,7 @@
 - add player.spu to get current select spu track id
 - add player.audioTrack to get current select audio track id
 - add player.spuCount to get spu count
+- fix: DestroyObject delete peer issue in api.cc
 
 ## 0.2.0
 
