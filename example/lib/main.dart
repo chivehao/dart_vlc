@@ -180,7 +180,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                         width: 152.0,
                                         child: DropdownButton<MediaType>(
                                           value: mediaType,
-                                          onChanged: (value) => this.setState(
+                                          onChanged: (value) => setState(
                                               () => mediaType = value!),
                                           items: [
                                             DropdownMenuItem<MediaType>(
@@ -255,8 +255,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                   ),
                                   const Text('Playlist'),
                                 ] +
-                                this
-                                    .medias
+                                medias
                                     .map(
                                       (media) => ListTile(
                                         title: Text(
@@ -341,14 +340,12 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                               ),
                               Slider(
                                 min: 0,
-                                max: this
-                                        .position
+                                max: position
                                         .duration
                                         ?.inMilliseconds
                                         .toDouble() ??
                                     1.0,
-                                value: this
-                                        .position
+                                value: position
                                         .position
                                         ?.inMilliseconds
                                         .toDouble() ??
@@ -509,8 +506,7 @@ class PrimaryScreenState extends State<PrimaryScreen> {
                                     height: 12.0,
                                   ),
                                 ] +
-                                this
-                                    .devices
+                                devices
                                     .map(
                                       (device) => ListTile(
                                         title: Text(

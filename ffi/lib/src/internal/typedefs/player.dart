@@ -1,5 +1,4 @@
 import 'dart:ffi';
-import 'package:dart_vlc_ffi/dart_vlc_ffi.dart';
 import 'package:ffi/ffi.dart';
 
 typedef CommonFreeStrCXX = Void Function(Pointer<Utf8> str);

@@ -6,7 +6,6 @@ import 'package:ffi/ffi.dart';
 import 'package:dart_vlc_ffi/dart_vlc_ffi.dart';
 import 'package:dart_vlc_ffi/src/internal/ffi.dart';
 
-import 'enums/media_slave_type.dart';
 
 /// Represents dimensions of a video.
 class VideoDimensions {
