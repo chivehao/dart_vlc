@@ -1,13 +1,13 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 
-class DeviceStruct extends Struct {
+base class DeviceStruct extends Struct {
   external Pointer<Utf8> name;
   external Pointer<Utf8> id;
 }
 
 /// Struct received from C with devices data.
-class DeviceList extends Struct {
+base class DeviceList extends Struct {
   @Int32()
   external int size;
   external Pointer<DeviceStruct> devices;
