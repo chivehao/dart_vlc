@@ -143,6 +143,10 @@ abstract class PlayerFFI {
       .lookup<NativeFunction<PlayerSpuCXX>>('PlayerSpu')
       .asFunction();
 
+  static final PlayerSetSpuDelayDart setSpuDelay = dynamicLibrary
+      .lookup<NativeFunction<PlayerSetSpuDelayCXX>>('PlayerSetSpuDelay')
+      .asFunction();
+
   static final PlayerSpuCountDart spuCount = dynamicLibrary
       .lookup<NativeFunction<PlayerSpuCountCXX>>('PlayerSpuCount')
       .asFunction();

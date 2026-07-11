@@ -105,6 +105,8 @@ class Player {
 
   int32_t SetSpu(int32_t i_spu);
 
+  int32_t SetSpuDelay(int64_t delay);
+
   int32_t Spu();
 
   int32_t SpuCount();

@@ -481,6 +481,10 @@ class Player {
     return PlayerFFI.spuCount(id);
   }
 
+  int setSpuDelay(int delay) {
+    return PlayerFFI.setSpuDelay(id, delay);
+  }
+
   int audioTrack() {
     return PlayerFFI.audioTrack(id);
   }

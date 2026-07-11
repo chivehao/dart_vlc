@@ -122,6 +122,8 @@ DLLEXPORT void CommonFreeStr(const char* str) {
 
 DLLEXPORT int32_t PlayerSetSpu(int32_t id, int32_t i_spu);
 
+DLLEXPORT int32_t PlayerSetSpuDelay(int32_t id, int64_t delay);
+
 DLLEXPORT int32_t PlayerSpu(int32_t id);
 
 DLLEXPORT int32_t PlayerSpuCount(int32_t id);

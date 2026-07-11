@@ -19,6 +19,7 @@
 #include "player/player.h"
 
 #include <functional>
+#include <vlc/libvlc.h>
 
 Player::Player(const std::vector<std::string>& cmd_arguments) {
   if (cmd_arguments.empty()) {
@@ -303,6 +304,10 @@ int32_t Player::Spu() {
 
 int32_t Player::SpuCount() {
     return vlc_media_player_.spuCount();
+}
+
+int32_t Player::SetSpuDelay(int64_t delay) {
+    return libvlc_video_set_spu_delay(vlc_media_player_, delay);
 }
 
 int32_t Player::AudioTrack() {
